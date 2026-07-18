@@ -6,7 +6,7 @@ type ReservationFlash = {
 };
 
 export default function Dashboard() {
-    const { flash } = usePage<{ flash?: ReservationFlash }>().props;
+    const { flash, reservations = [] } = usePage<{ flash?: ReservationFlash; reservations?: any[] }>().props;
     const { data, setData, post, processing, reset } = useForm({
         reservation_date: '',
         student_id: '',
@@ -80,6 +80,38 @@ export default function Dashboard() {
                             </button>
                         </div>
                     </form>
+                </div>
+
+                <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+                    <h3 className="mb-4 text-lg font-medium">Existing Reservations</h3>
+                    <div className="overflow-auto">
+                        <table className="min-w-full table-auto text-sm">
+                            <thead>
+                                <tr className="text-left">
+                                    <th className="px-3 py-2">Date</th>
+                                    <th className="px-3 py-2">Student</th>
+                                    <th className="px-3 py-2">Year</th>
+                                    <th className="px-3 py-2">Course</th>
+                                    <th className="px-3 py-2">Time</th>
+                                    <th className="px-3 py-2">Total</th>
+                                    <th className="px-3 py-2">Max</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {reservations.map((r: any) => (
+                                    <tr key={r.reservation_id} className="border-t">
+                                        <td className="px-3 py-2">{r.reservation_date}</td>
+                                        <td className="px-3 py-2">{r.student_name} <div className="text-xs text-slate-500">{r.student_id}</div></td>
+                                        <td className="px-3 py-2">{r.year}</td>
+                                        <td className="px-3 py-2">{r.course}</td>
+                                        <td className="px-3 py-2">{r.time_effective}</td>
+                                        <td className="px-3 py-2">{r.total_students}</td>
+                                        <td className="px-3 py-2">{r.maximum_students}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </>
